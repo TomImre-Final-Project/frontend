@@ -4,52 +4,61 @@ import useAuthContext from "../contexts/AuthContext";
 
 import { useNavigate } from "react-router-dom";
 
+import  {myAxios}  from "../api/axios";
+
 export default function Regisztracio() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password_confirmation, setPasswordConfirmation] = useState("");
+  const [role, setRole] = useState("customer");
+  const [phone, setPhone] = useState("");
 
   const navigate = useNavigate();
 
   const { loginReg, errors } = useAuthContext();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    //Összegyűjtjük egyetlen objektumban az űrlap adatokat
+  const handleSubmit = async (e) => {
+    e.preventDefault();       
     const adat = {
-      name: name,
+      username: username,
       email: email,
       password: password,
       password_confirmation: password_confirmation,
-    };
-    console.log(adat);
-    loginReg(adat, "/register");
-  };
+      role: role,
+      phone: phone
+    };       
+    try {
+        await myAxios.post("/register", adat);
+        navigate("/dashboard");
+    } catch (error) {
+        console.log(error);
+    }
+};
 
   return (
     <div className=" m-auto" style={{ maxWidth: "400px" }}>
       <h1 className="text-center">Regisztráció</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-3 mt-3">
-          <label htmlFor="name" className="form-label">
-            Név:
+          <label htmlFor="username" className="form-label">
+            Felhasználónév:
           </label>
           <input
             type="text"
-            value={name}
+            value={username}
             onChange={(e) => {
-              setName(e.target.value);
+              setUsername(e.target.value);
             }}
             className="form-control"
-            id="name"
-            placeholder="Név"
-            name="name"
+            id="username"
+            placeholder="Felhasználónév"
+            name="username"
           />
           <div>
-            {errors.name && (
-              <span className="text-danger">{errors.name[0]}</span>
+            {errors.username && (
+              <span className="text-danger">{errors.username[0]}</span>
             )}
           </div>
         </div>
@@ -71,6 +80,27 @@ export default function Regisztracio() {
           <div>
             {errors.email && (
               <span className="text-danger">{errors.email[0]}</span>
+            )}
+          </div>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="phone" className="form-label">
+            Telefonszám:
+          </label>
+          <input
+            type="tel"
+            value={phone}
+            onChange={(e) => {
+              setPhone(e.target.value);
+            }}
+            className="form-control"
+            id="phone"
+            placeholder="Telefonszám"
+            name="phone"
+          />
+          <div>
+            {errors.phone && (
+              <span className="text-danger">{errors.phone[0]}</span>
             )}
           </div>
         </div>
@@ -117,6 +147,21 @@ export default function Regisztracio() {
               </span>
             )}
           </div>
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="role" className="form-label">
+            Szerepkör:
+          </label>
+          <select
+            className="form-control"
+            id="role"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+          >
+            <option value="customer">Vásárló</option>
+            <option value="courier">Futár</option>
+          </select>
         </div>
 
         <button type="submit" className="btn btn-primary w-100">

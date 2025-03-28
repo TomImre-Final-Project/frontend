@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthContext from "../contexts/AuthContext";
-import  myAxios  from "../api/axios";
+import  {myAxios}  from "../api/axios";
 
 
 export default function Bejelentkezes() {
@@ -10,19 +10,23 @@ export default function Bejelentkezes() {
 
   const navigate = useNavigate();
   const { loginReg, errors } = useAuthContext();
-
+  
+  const csrf = () => myAxios.get("/sanctum/csrf-cookie");
+  
   const handleSubmit = async (e) => {
     e.preventDefault();       
     const adat = {
-        email: email,
-        password: password,
+      email: email,
+      password: password,
     };       
     try {
-        await myAxios.post("/login", adat );
+      await myAxios.post("/login", adat );
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-};
+    loginReg(adat, "/login");
+  };
+  
 
   return (
     <div className="m-auto" style={{ maxWidth: "400px" }}>

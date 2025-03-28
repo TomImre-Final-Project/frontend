@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [errors, setErrors] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
     password_confirmation: "",

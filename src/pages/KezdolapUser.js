@@ -7,7 +7,7 @@ export default function KezdolapUser() {
     return (
         <div>
             <h1>Kezdőlap user</h1>
-            <p>Bejelentkezett felhasználó: { user==null?"Nincs bejelentkezett felhasználó!":user.name }</p>
+            <p>Bejelentkezett felhasználó: { user==null?"Nincs bejelentkezett felhasználó!":user.username }</p>
         </div>
     );
 }
