@@ -29,11 +29,6 @@ export const AuthProvider = ({ children }) => {
       console.log(resp);
     });
   };
-  useEffect(() => {
-    if (!user) {
-      getUser()
-    }
-  }, [])
   const loginReg = async ({ ...adat }, vegpont) => {
     //lekérjük a csrf tokent
     await csrf();
