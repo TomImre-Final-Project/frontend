@@ -8,6 +8,7 @@ import KezdolapUser from "./pages/KezdolapUser";
 import UserLayout from "./layouts/UserLayout";
 import RestaurantManagerLayout from "./layouts/RestaurantManagerLayout";
 import CourierLayout from "./layouts/CourierLayout";
+import Profile from "./pages/Profile";
 import useAuthContext from "./contexts/AuthContext";
 
 
@@ -30,6 +31,7 @@ function App() {
                     <Route element={<AdminLayout />}>
                         <Route path="/" element={<Kezdolap />} />
                         <Route path="admin" element={<div>Admin Panel</div>} />
+                        <Route path="profile" element={<Profile />} />
                     </Route>
                 )}
 
@@ -38,6 +40,7 @@ function App() {
                     <Route element={<RestaurantManagerLayout />}>
                         <Route path="/" element={<div>Restaurant Manager Panel</div>} />
                         <Route path="restaurant" element={<div>My Restaurant</div>} />
+                        <Route path="profile" element={<Profile />} />
                     </Route>
                 )}
 
@@ -46,6 +49,7 @@ function App() {
                     <Route element={<CourierLayout />}>
                         <Route path="/" element={<div>Courier Panel</div>} />
                         <Route path="deliveries" element={<div>Deliveries</div>} />
+                        <Route path="profile" element={<Profile />} />
                     </Route>
                 )}
 
@@ -53,6 +57,7 @@ function App() {
                 {user && user.role === "customer" && (
                     <Route element={<UserLayout />}>
                         <Route path="/" element={<KezdolapUser />} />
+                        <Route path="profile" element={<Profile />} />
                     </Route>
                 )}
             </Routes>

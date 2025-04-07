@@ -8,7 +8,7 @@ export default function Navigacio() {
     return (
         <nav className="navbar navbar-expand-sm bg-light">
             <div className="container-fluid">
-                <ul className="navbar-nav">
+                <ul className="navbar-nav me-auto">
                     <li className="navbar-item">
                         <Link className="nav-link" to="/">
                             Kezdőlap
@@ -16,6 +16,13 @@ export default function Navigacio() {
                     </li>
                     {user ? (
                         <>
+                            {user.role === "admin" && (
+                                <li className="navbar-item">
+                                    <Link className="nav-link" to="/admin">
+                                        Admin Felület
+                                    </Link>
+                                </li>
+                            )}
                             <li className="navbar-item">
                                 <button className="nav-link" onClick={()=>{logout()}}>
                                     Kijelentkezés
@@ -37,6 +44,15 @@ export default function Navigacio() {
                         </>
                     )}
                 </ul>
+                {user && (
+                    <ul className="navbar-nav">
+                        <li className="navbar-item">
+                            <Link className="nav-link" to="/profile">
+                                {user.username}
+                            </Link>
+                        </li>
+                    </ul>
+                )}
             </div>
         </nav>
     );
