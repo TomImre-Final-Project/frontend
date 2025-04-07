@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import useAuthContext from "../contexts/AuthContext";
 
-export default function NavigacioAdmin() {
+export default function NavigacioCourier() {
     const { logout } = useAuthContext();
 
     return (
@@ -15,8 +15,8 @@ export default function NavigacioAdmin() {
                         </Link>
                     </li>
                     <li className="navbar-item">
-                        <Link className="nav-link" to="/admin">
-                            Admin Felület
+                        <Link className="nav-link" to="/deliveries">
+                            Kiszállítások
                         </Link>
                     </li>
                     <li className="navbar-item">
@@ -28,4 +28,4 @@ export default function NavigacioAdmin() {
             </div>
         </nav>
     );
-}
+} 
