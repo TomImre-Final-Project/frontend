@@ -29,12 +29,7 @@ export default function Regisztracio() {
       role: role,
       phone: phone
     };       
-    try {
-        await myAxios.post("/register", adat);
-        navigate("/dashboard");
-    } catch (error) {
-        console.log(error);
-    }
+    loginReg(adat, "/register");
 };
 
   return (
