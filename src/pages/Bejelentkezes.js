@@ -11,19 +11,12 @@ export default function Bejelentkezes() {
   const navigate = useNavigate();
   const { loginReg, errors } = useAuthContext();
   
-  const csrf = () => myAxios.get("/sanctum/csrf-cookie");
-  
   const handleSubmit = async (e) => {
     e.preventDefault();       
     const adat = {
       email: email,
       password: password,
     };       
-    try {
-      await myAxios.post("/login", adat );
-    } catch (error) {
-      console.log(error);
-    }
     loginReg(adat, "/login");
   };
   
@@ -38,9 +31,7 @@ export default function Bejelentkezes() {
           </label>
           <input
             type="email"
-            // value beállítása a state értékére
             value={email}
-            // state értékének módosítása ha változik a beviteli mező tartalma
             onChange={(e) => {
               setEmail(e.target.value);
             }}
