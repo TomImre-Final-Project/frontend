@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useAuthContext from "../contexts/AuthContext";
 import { myAxios } from "../api/axios";
+import { useNavigate } from 'react-router-dom';
 
 export default function KezdolapUser() {
     const { user } = useAuthContext();
@@ -9,6 +10,7 @@ export default function KezdolapUser() {
     const [dishes, setDishes] = useState([]);
     const [cart, setCart] = useState([]);
     const [cartRestaurant, setCartRestaurant] = useState(null);
+    const navigate = useNavigate();
 
     // Fetch restaurants when component mounts
     useEffect(() => {
@@ -98,6 +100,16 @@ export default function KezdolapUser() {
     const emptyCart = () => {
         setCart([]);
         setCartRestaurant(null);
+    };
+
+    const handleProceedToOrder = () => {
+        navigate('/order-details', { 
+            state: { 
+                cart,
+                cartRestaurant,
+                totalAmount: calculateTotal()
+            } 
+        });
     };
 
     return (
@@ -210,8 +222,11 @@ export default function KezdolapUser() {
                                         <h5>Összesen:</h5>
                                         <h5>{calculateTotal()} Ft</h5>
                                     </div>
-                                    <button className="btn btn-success w-100 mt-3">
-                                        Rendelés leadása
+                                    <button 
+                                        className="btn btn-success w-100 mt-3"
+                                        onClick={handleProceedToOrder}
+                                    >
+                                        Tovább a rendeléshez
                                     </button>
                                 </>
                             )}

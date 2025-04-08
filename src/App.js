@@ -9,6 +9,8 @@ import UserLayout from "./layouts/UserLayout";
 import RestaurantManagerLayout from "./layouts/RestaurantManagerLayout";
 import CourierLayout from "./layouts/CourierLayout";
 import Profile from "./pages/Profile";
+import OrderDetails from "./pages/OrderDetails";
+import OrderSuccess from "./pages/OrderSuccess";
 import useAuthContext from "./contexts/AuthContext";
 
 
@@ -58,6 +60,8 @@ function App() {
                     <Route element={<UserLayout />}>
                         <Route path="/" element={<KezdolapUser />} />
                         <Route path="profile" element={<Profile />} />
+                        <Route path="order-details" element={<OrderDetails />} />
+                        <Route path="order-success" element={<OrderSuccess />} />
                     </Route>
                 )}
             </Routes>
