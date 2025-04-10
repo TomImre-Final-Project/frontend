@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import useAuthContext from "../contexts/AuthContext";
+import { useCart } from "../contexts/CartContext";
 import { myAxios } from "../api/axios";
 import { useNavigate } from 'react-router-dom';
 
 export default function KezdolapUser() {
     const { user } = useAuthContext();
+    const { cart, cartRestaurant, addToCart, removeFromCart, updateQuantity, emptyCart, calculateTotal } = useCart();
     const [restaurants, setRestaurants] = useState([]);
     const [selectedRestaurant, setSelectedRestaurant] = useState(null);
     const [dishes, setDishes] = useState([]);
-    const [cart, setCart] = useState([]);
-    const [cartRestaurant, setCartRestaurant] = useState(null);
     const navigate = useNavigate();
 
     // Fetch restaurants when component mounts
@@ -44,62 +44,6 @@ export default function KezdolapUser() {
 
     const handleRestaurantClick = (restaurant) => {
         setSelectedRestaurant(restaurant);
-    };
-
-    const addToCart = (dish) => {
-        // Check if cart is empty or if the dish is from the same restaurant
-        if (cart.length === 0) {
-            // If cart is empty, set cart restaurant
-            setCartRestaurant(selectedRestaurant);
-            setCart([{ ...dish, quantity: 1 }]);
-        } else if (cartRestaurant && cartRestaurant.id === selectedRestaurant.id) {
-            // If dish is from the same restaurant
-            const existingDish = cart.find(item => item.id === dish.id);
-            if (existingDish) {
-                // Increase quantity if dish already in cart
-                const updatedCart = cart.map(item => 
-                    item.id === dish.id ? { ...item, quantity: item.quantity + 1 } : item
-                );
-                setCart(updatedCart);
-            } else {
-                // Add new dish to cart
-                setCart([...cart, { ...dish, quantity: 1 }]);
-            }
-        } else {
-            // If dish is from different restaurant, confirm replacement
-            if (window.confirm('A kosárba csak egy étteremből tehetsz ételeket. Kiürítsük a kosarat és új éttermet válasszunk?')) {
-                setCartRestaurant(selectedRestaurant);
-                setCart([{ ...dish, quantity: 1 }]);
-            }
-        }
-    };
-
-    const removeFromCart = (dishId) => {
-        const updatedCart = cart.filter(item => item.id !== dishId);
-        setCart(updatedCart);
-        
-        // If cart becomes empty, reset cart restaurant
-        if (updatedCart.length === 0) {
-            setCartRestaurant(null);
-        }
-    };
-
-    const updateQuantity = (dishId, newQuantity) => {
-        if (newQuantity < 1) return;
-        
-        const updatedCart = cart.map(item => 
-            item.id === dishId ? { ...item, quantity: newQuantity } : item
-        );
-        setCart(updatedCart);
-    };
-
-    const calculateTotal = () => {
-        return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-    };
-
-    const emptyCart = () => {
-        setCart([]);
-        setCartRestaurant(null);
     };
 
     const handleProceedToOrder = () => {
@@ -148,7 +92,7 @@ export default function KezdolapUser() {
                                             <small>{dish.price} Ft</small>
                                             <button 
                                                 className="btn btn-primary btn-sm"
-                                                onClick={() => addToCart(dish)}
+                                                onClick={() => addToCart(dish, selectedRestaurant)}
                                             >
                                                 Kosárba
                                             </button>

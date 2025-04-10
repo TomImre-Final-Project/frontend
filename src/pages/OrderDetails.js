@@ -1,26 +1,19 @@
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { myAxios } from "../api/axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useAuthContext from "../contexts/AuthContext";
+import { useCart } from "../contexts/CartContext";
+import { myAxios } from "../api/axios";
 
 export default function OrderDetails() {
     const { user } = useAuthContext();
-    const location = useLocation();
-    const navigate = useNavigate();
-    const [instructions, setInstructions] = useState('');
+    const { cart, cartRestaurant, calculateTotal, emptyCart } = useCart();
+    const [instructions, setInstructions] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
-    // Get cart data from navigation state
-    const { cart, cartRestaurant, totalAmount } = location.state || {};
-
-    // Redirect if no cart data
-    if (!cart || !cartRestaurant) {
-        navigate('/');
-        return null;
-    }
-
-    const handleSubmitOrder = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         setIsSubmitting(true);
         setError(null);
 
@@ -31,7 +24,7 @@ export default function OrderDetails() {
                 restaurant_id: cartRestaurant.id,
                 order_date: new Date().toISOString(),
                 status: 'pending',
-                total_price: Math.round(totalAmount),
+                total_price: Math.round(calculateTotal()),
                 special_instructions: instructions
             };
 
@@ -48,6 +41,9 @@ export default function OrderDetails() {
                 };
                 await myAxios.post('/api/order-items', orderItemData);
             }
+
+            // Clear the cart after successful order
+            emptyCart();
 
             // Navigate to success page
             navigate('/order-success', { 
@@ -86,46 +82,48 @@ export default function OrderDetails() {
                                 ))}
                                 <li className="list-group-item d-flex justify-content-between">
                                     <strong>Összesen:</strong>
-                                    <strong>{totalAmount} Ft</strong>
+                                    <strong>{calculateTotal()} Ft</strong>
                                 </li>
                             </ul>
 
-                            <div className="mb-3">
-                                <label htmlFor="instructions" className="form-label">
-                                    Különleges kérések az étteremnek:
-                                </label>
-                                <textarea
-                                    id="instructions"
-                                    className="form-control"
-                                    rows="3"
-                                    value={instructions}
-                                    onChange={(e) => setInstructions(e.target.value)}
-                                    placeholder="Pl.: allergiák, különleges kérések..."
-                                ></textarea>
-                            </div>
-
-                            {error && (
-                                <div className="alert alert-danger" role="alert">
-                                    {error}
+                            <form onSubmit={handleSubmit}>
+                                <div className="mb-3">
+                                    <label htmlFor="instructions" className="form-label">
+                                        Megjegyzés a rendeléshez:
+                                    </label>
+                                    <textarea
+                                        className="form-control"
+                                        id="instructions"
+                                        rows="3"
+                                        value={instructions}
+                                        onChange={(e) => setInstructions(e.target.value)}
+                                        placeholder="Például: extra csípős, allergia, stb."
+                                    ></textarea>
                                 </div>
-                            )}
 
-                            <div className="d-grid gap-2">
-                                <button
-                                    className="btn btn-success"
-                                    onClick={handleSubmitOrder}
-                                    disabled={isSubmitting}
-                                >
-                                    {isSubmitting ? 'Feldolgozás...' : 'Rendelés leadása'}
-                                </button>
-                                <button
-                                    className="btn btn-outline-secondary"
-                                    onClick={() => navigate('/')}
-                                    disabled={isSubmitting}
-                                >
-                                    Vissza a módosításhoz
-                                </button>
-                            </div>
+                                {error && (
+                                    <div className="alert alert-danger" role="alert">
+                                        {error}
+                                    </div>
+                                )}
+
+                                <div className="d-flex justify-content-between">
+                                    <button
+                                        type="button"
+                                        className="btn btn-secondary"
+                                        onClick={() => navigate(-1)}
+                                    >
+                                        Vissza a módosításhoz
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary"
+                                        disabled={isSubmitting}
+                                    >
+                                        {isSubmitting ? 'Feldolgozás...' : 'Rendelés leadása'}
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -138,7 +136,6 @@ export default function OrderDetails() {
                         <div className="card-body">
                             <p><strong>Rendelő neve:</strong> {user.name}</p>
                             <p><strong>Email:</strong> {user.email}</p>
-                            {/* Add more user details if needed */}
                         </div>
                     </div>
                 </div>
