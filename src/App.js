@@ -31,27 +31,33 @@ function App() {
                 {/* Admin routes */}
                 {user && user.role === "admin" && (
                     <Route element={<AdminLayout />}>
-                        <Route path="/" element={<Kezdolap />} />
+                        <Route path="/" element={<KezdolapUser />} />
                         <Route path="admin" element={<div>Admin Panel</div>} />
                         <Route path="profile" element={<Profile />} />
+                        <Route path="order-details" element={<OrderDetails />} />
+                        <Route path="order-success" element={<OrderSuccess />} />
                     </Route>
                 )}
 
                 {/* Restaurant Manager routes */}
                 {user && user.role === "restaurant_manager" && (
                     <Route element={<RestaurantManagerLayout />}>
-                        <Route path="/" element={<div>Restaurant Manager Panel</div>} />
+                        <Route path="/" element={<KezdolapUser />} />
                         <Route path="restaurant" element={<div>My Restaurant</div>} />
                         <Route path="profile" element={<Profile />} />
+                        <Route path="order-details" element={<OrderDetails />} />
+                        <Route path="order-success" element={<OrderSuccess />} />
                     </Route>
                 )}
 
                 {/* Courier routes */}
                 {user && user.role === "courier" && (
                     <Route element={<CourierLayout />}>
-                        <Route path="/" element={<div>Courier Panel</div>} />
+                        <Route path="/" element={<KezdolapUser />} />
                         <Route path="deliveries" element={<div>Deliveries</div>} />
                         <Route path="profile" element={<Profile />} />
+                        <Route path="order-details" element={<OrderDetails />} />
+                        <Route path="order-success" element={<OrderSuccess />} />
                     </Route>
                 )}
 
