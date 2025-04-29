@@ -11,6 +11,10 @@ import CourierLayout from "./layouts/CourierLayout";
 import Profile from "./pages/Profile";
 import OrderDetails from "./pages/OrderDetails";
 import OrderSuccess from "./pages/OrderSuccess";
+import Restaurants from "./pages/admin/Restaurants";
+import Users from "./pages/admin/Users";
+import Statistics from "./pages/admin/Statistics";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import useAuthContext from "./contexts/AuthContext";
 
 
@@ -32,7 +36,10 @@ function App() {
                 {user && user.role === "admin" && (
                     <Route element={<AdminLayout />}>
                         <Route path="/" element={<KezdolapUser />} />
-                        <Route path="admin" element={<div>Admin Panel</div>} />
+                        <Route path="admin" element={<AdminDashboard />} />
+                        <Route path="admin/restaurants" element={<Restaurants />} />
+                        <Route path="admin/users" element={<Users />} />
+                        <Route path="admin/statistics" element={<Statistics />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="order-details" element={<OrderDetails />} />
                         <Route path="order-success" element={<OrderSuccess />} />
