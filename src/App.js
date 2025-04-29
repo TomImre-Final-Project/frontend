@@ -13,9 +13,12 @@ import OrderDetails from "./pages/OrderDetails";
 import OrderSuccess from "./pages/OrderSuccess";
 import Restaurants from "./pages/admin/Restaurants";
 import Users from "./pages/admin/Users";
+import Orders from "./pages/admin/Orders";
 import Statistics from "./pages/admin/Statistics";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import useAuthContext from "./contexts/AuthContext";
+import Deliverable from "./pages/courier/Deliverable";
+import MyDeliveries from "./pages/courier/MyDeliveries";
 
 
 function App() {
@@ -39,6 +42,7 @@ function App() {
                         <Route path="admin" element={<AdminDashboard />} />
                         <Route path="admin/restaurants" element={<Restaurants />} />
                         <Route path="admin/users" element={<Users />} />
+                        <Route path="admin/orders" element={<Orders />} />
                         <Route path="admin/statistics" element={<Statistics />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="order-details" element={<OrderDetails />} />
@@ -65,6 +69,8 @@ function App() {
                         <Route path="profile" element={<Profile />} />
                         <Route path="order-details" element={<OrderDetails />} />
                         <Route path="order-success" element={<OrderSuccess />} />
+                        <Route path="courier/deliverable" element={<Deliverable />} />
+                        <Route path="courier/my-deliveries" element={<MyDeliveries />} />
                     </Route>
                 )}
 

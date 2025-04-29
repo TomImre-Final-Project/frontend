@@ -26,6 +26,14 @@ export default function AdminSubNav() {
                     </li>
                     <li className="navbar-item">
                         <Link 
+                            className={`nav-link ${location.pathname === '/admin/orders' ? 'active' : ''}`} 
+                            to="/admin/orders"
+                        >
+                            Rendelések
+                        </Link>
+                    </li>
+                    <li className="navbar-item">
+                        <Link 
                             className={`nav-link ${location.pathname === '/admin/statistics' ? 'active' : ''}`} 
                             to="/admin/statistics"
                         >
