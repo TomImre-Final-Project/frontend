@@ -15,8 +15,8 @@ export default function NavigacioCourier() {
                         </Link>
                     </li>
                     <li className="navbar-item">
-                        <Link className="nav-link" to="/deliveries">
-                            Kiszállítások
+                        <Link className="nav-link" to="/courier">
+                            Futár Felület
                         </Link>
                     </li>
                     <li className="navbar-item">

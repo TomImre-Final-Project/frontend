@@ -12,17 +12,9 @@ export default function KezdolapUser() {
     const [dishes, setDishes] = useState([]);
     const navigate = useNavigate();
 
-    // Fetch restaurants when component mounts
     useEffect(() => {
         fetchRestaurants();
     }, []);
-
-    // Fetch dishes when a restaurant is selected
-    useEffect(() => {
-        if (selectedRestaurant) {
-            fetchDishes(selectedRestaurant.id);
-        }
-    }, [selectedRestaurant]);
 
     const fetchRestaurants = async () => {
         try {
@@ -44,6 +36,12 @@ export default function KezdolapUser() {
 
     const handleRestaurantClick = (restaurant) => {
         setSelectedRestaurant(restaurant);
+        fetchDishes(restaurant.id);
+    };
+
+    const handleBackToRestaurants = () => {
+        setSelectedRestaurant(null);
+        setDishes([]);
     };
 
     const handleProceedToOrder = () => {
@@ -60,62 +58,80 @@ export default function KezdolapUser() {
         <div className="container mt-4">
             <h1>Éttermek és Ételeik</h1>
             <p>Bejelentkezett felhasználó: {user == null ? "Nincs bejelentkezett felhasználó!" : user.username}</p>
-
             <div className="row">
-                {/* Restaurants List */}
-                <div className="col-md-4">
-                    <h2>Éttermek</h2>
-                    <div className="list-group">
-                        {restaurants.map((restaurant) => (
-                            <button
-                                key={restaurant.id}
-                                className={`list-group-item list-group-item-action ${selectedRestaurant?.id === restaurant.id ? 'active' : ''}`}
-                                onClick={() => handleRestaurantClick(restaurant)}
-                            >
-                                {restaurant.name}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Dishes List */}
-                <div className="col-md-4">
-                    {selectedRestaurant && (
-                        <div>
-                            <h2>Ételek - {selectedRestaurant.name}</h2>
-                            <div className="list-group">
-                                {dishes.map((dish) => (
-                                    <div key={dish.id} className="list-group-item">
-                                        <h5 className="mb-1">{dish.name}</h5>
-                                        <p className="mb-1">{dish.description}</p>
-                                        <div className="d-flex justify-content-between align-items-center">
-                                            <small>{dish.price} Ft</small>
-                                            <button 
-                                                className="btn btn-primary btn-sm"
-                                                onClick={() => addToCart(dish, selectedRestaurant)}
-                                            >
-                                                Kosárba
-                                            </button>
+                {/* Restaurants List as Cards in 2 columns, hidden when a restaurant is selected */}
+                {!selectedRestaurant && (
+                    <div className="col-md-9">
+                        <h2>Éttermek</h2>
+                        <div className="row">
+                            {restaurants.filter(r => r.status === 'active').map((restaurant) => (
+                                <div key={restaurant.id} className="col-md-6 mb-3">
+                                    <div
+                                        className="card h-100"
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={() => handleRestaurantClick(restaurant)}
+                                    >
+                                        <div className="card-body">
+                                            <h5 className="card-title">{restaurant.name}</h5>
+                                            <p className="card-text">{restaurant.address}</p>
+                                            <p className="card-text"><small>{restaurant.phone}</small></p>
                                         </div>
                                     </div>
-                                ))}
-                                {dishes.length === 0 && (
-                                    <div className="list-group-item">
-                                        Nincsenek elérhető ételek ebben az étteremben.
-                                    </div>
-                                )}
-                            </div>
+                                </div>
+                            ))}
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
+
+                {/* Dishes List as Cards with Back Button */}
+                {selectedRestaurant && (
+                    <div className="col-md-9">
+                        <button className="btn btn-secondary mb-3" onClick={handleBackToRestaurants}>&larr; Vissza az éttermekhez</button>
+                        <h2>Ételek - {selectedRestaurant.name}</h2>
+                        <div className="row">
+                            {dishes.map((dish) => (
+                                <div key={dish.id} className="col-md-6 mb-3">
+                                    <div className="card h-100">
+                                        {dish.image && (
+                                            <img
+                                                src={`${process.env.REACT_APP_API_URL}/storage/${dish.image}`}
+                                                className="card-img-top"
+                                                alt={dish.name}
+                                                style={{ height: '160px', objectFit: 'cover' }}
+                                            />
+                                        )}
+                                        <div className="card-body d-flex flex-column">
+                                            <h5 className="card-title">{dish.name}</h5>
+                                            <p className="card-text">{dish.description}</p>
+                                            <div className="mt-auto d-flex justify-content-between align-items-center">
+                                                <span><strong>{dish.price} Ft</strong></span>
+                                                <button
+                                                    className="btn btn-primary btn-sm"
+                                                    onClick={() => addToCart(dish, selectedRestaurant)}
+                                                >
+                                                    Kosárba
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                            {dishes.length === 0 && (
+                                <div className="col-12">
+                                    <div className="alert alert-info">Nincsenek elérhető ételek ebben az étteremben.</div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
 
                 {/* Shopping Cart */}
-                <div className="col-md-4">
+                <div className="col-md-3">
                     <div className="card">
                         <div className="card-header d-flex justify-content-between align-items-center">
                             <h2 className="mb-0">Kosár</h2>
                             {cart.length > 0 && (
-                                <button 
+                                <button
                                     className="btn btn-danger btn-sm"
                                     onClick={emptyCart}
                                 >
@@ -139,20 +155,20 @@ export default function KezdolapUser() {
                                                     <small className="text-muted">{item.price} Ft</small>
                                                 </div>
                                                 <div className="d-flex align-items-center">
-                                                    <button 
+                                                    <button
                                                         className="btn btn-outline-secondary btn-sm me-2"
                                                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                                     >
                                                         -
                                                     </button>
                                                     <span>{item.quantity}</span>
-                                                    <button 
+                                                    <button
                                                         className="btn btn-outline-secondary btn-sm ms-2"
                                                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                                     >
                                                         +
                                                     </button>
-                                                    <button 
+                                                    <button
                                                         className="btn btn-outline-danger btn-sm ms-2"
                                                         onClick={() => removeFromCart(item.id)}
                                                     >
@@ -166,7 +182,7 @@ export default function KezdolapUser() {
                                         <h5>Összesen:</h5>
                                         <h5>{calculateTotal()} Ft</h5>
                                     </div>
-                                    <button 
+                                    <button
                                         className="btn btn-success w-100 mt-3"
                                         onClick={handleProceedToOrder}
                                     >

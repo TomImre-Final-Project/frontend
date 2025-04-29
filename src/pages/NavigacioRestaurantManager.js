@@ -15,7 +15,7 @@ export default function NavigacioRestaurantManager() {
                         </Link>
                     </li>
                     <li className="navbar-item">
-                        <Link className="nav-link" to="/restaurant">
+                        <Link className="nav-link" to="/restaurantmanager/restaurant">
                             Étterem Kezelése
                         </Link>
                     </li>

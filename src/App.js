@@ -19,6 +19,11 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import useAuthContext from "./contexts/AuthContext";
 import Deliverable from "./pages/courier/Deliverable";
 import MyDeliveries from "./pages/courier/MyDeliveries";
+import CourierDashboard from "./pages/courier/CourierDashboard";
+import IncomingOrders from "./pages/restaurantmanager/IncomingOrders";
+import MyRestaurant from "./pages/restaurantmanager/MyRestaurant";
+import Dishes from "./pages/restaurantmanager/Dishes";
+import RestaurantManagerDashboard from "./pages/restaurantmanager/RestaurantManagerDashboard";
 
 
 function App() {
@@ -54,7 +59,10 @@ function App() {
                 {user && user.role === "restaurant_manager" && (
                     <Route element={<RestaurantManagerLayout />}>
                         <Route path="/" element={<KezdolapUser />} />
-                        <Route path="restaurant" element={<div>My Restaurant</div>} />
+                        <Route path="restaurantmanager" element={<RestaurantManagerDashboard />} />
+                        <Route path="restaurantmanager/restaurant" element={<MyRestaurant />} />
+                        <Route path="restaurantmanager/dishes" element={<Dishes />} />
+                        <Route path="restaurantmanager/orders" element={<IncomingOrders />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="order-details" element={<OrderDetails />} />
                         <Route path="order-success" element={<OrderSuccess />} />
@@ -65,12 +73,12 @@ function App() {
                 {user && user.role === "courier" && (
                     <Route element={<CourierLayout />}>
                         <Route path="/" element={<KezdolapUser />} />
-                        <Route path="deliveries" element={<div>Deliveries</div>} />
+                        <Route path="courier" element={<CourierDashboard />} />
+                        <Route path="courier/deliverable" element={<Deliverable />} />
+                        <Route path="courier/my-deliveries" element={<MyDeliveries />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="order-details" element={<OrderDetails />} />
                         <Route path="order-success" element={<OrderSuccess />} />
-                        <Route path="courier/deliverable" element={<Deliverable />} />
-                        <Route path="courier/my-deliveries" element={<MyDeliveries />} />
                     </Route>
                 )}
 

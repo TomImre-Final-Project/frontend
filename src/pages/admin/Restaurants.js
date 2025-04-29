@@ -4,6 +4,7 @@ import AdminSubNav from './AdminSubNav';
 
 export default function Restaurants() {
     const [restaurants, setRestaurants] = useState([]);
+    const [managers, setManagers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [editingRestaurant, setEditingRestaurant] = useState(null);
@@ -11,11 +12,13 @@ export default function Restaurants() {
         name: '',
         address: '',
         phone: '',
-        status: 'active'
+        status: 'active',
+        manager_id: null
     });
 
     useEffect(() => {
         fetchRestaurants();
+        fetchManagers();
     }, []);
 
     const fetchRestaurants = async () => {
@@ -29,13 +32,25 @@ export default function Restaurants() {
         }
     };
 
+    const fetchManagers = async () => {
+        try {
+            const response = await myAxios.get('/api/admin/users');
+            // Filter only restaurant managers
+            const restaurantManagers = response.data.filter(user => user.role === 'restaurant_manager');
+            setManagers(restaurantManagers);
+        } catch (err) {
+            setError('Failed to fetch managers');
+        }
+    };
+
     const handleEditClick = (restaurant) => {
         setEditingRestaurant(restaurant);
         setEditForm({
             name: restaurant.name,
             address: restaurant.address,
             phone: restaurant.phone,
-            status: restaurant.status
+            status: restaurant.status,
+            manager_id: restaurant.manager_id
         });
     };
 
@@ -73,6 +88,7 @@ export default function Restaurants() {
                             <th>Cím</th>
                             <th>Telefonszám</th>
                             <th>Státusz</th>
+                            <th>Vezető</th>
                             <th>Műveletek</th>
                         </tr>
                     </thead>
@@ -83,6 +99,12 @@ export default function Restaurants() {
                                 <td>{restaurant.address}</td>
                                 <td>{restaurant.phone}</td>
                                 <td>{restaurant.status}</td>
+                                <td>
+                                    {restaurant.manager ? 
+                                        `${restaurant.manager.username} (${restaurant.manager.email})` : 
+                                        'Nincs vezető'
+                                    }
+                                </td>
                                 <td>
                                     <button 
                                         className="btn btn-primary btn-sm"
@@ -156,6 +178,22 @@ export default function Restaurants() {
                                         >
                                             <option value="active">Aktív</option>
                                             <option value="inactive">Inaktív</option>
+                                        </select>
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Vezető</label>
+                                        <select
+                                            className="form-control"
+                                            name="manager_id"
+                                            value={editForm.manager_id || ''}
+                                            onChange={handleInputChange}
+                                        >
+                                            <option value="">Nincs vezető</option>
+                                            {managers.map(manager => (
+                                                <option key={manager.id} value={manager.id}>
+                                                    {manager.username} ({manager.email})
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                     <div className="modal-footer">

@@ -31,7 +31,32 @@ export default function Users() {
     };
 
     useEffect(() => {
-        fetchUsers();
+        let isSubscribed = true;
+
+        const fetchUsersWithCleanup = async () => {
+            try {
+                console.log('Fetching users from /api/admin/users');
+                const response = await myAxios.get('/api/admin/users');
+                console.log('Users response:', response);
+                if (isSubscribed) {
+                    setUsers(response.data);
+                    setLoading(false);
+                }
+            } catch (err) {
+                console.error('Error fetching users:', err);
+                console.error('Error details:', err.response);
+                if (isSubscribed) {
+                    setError(`Failed to fetch users: ${err.message}`);
+                    setLoading(false);
+                }
+            }
+        };
+
+        fetchUsersWithCleanup();
+
+        return () => {
+            isSubscribed = false;
+        };
     }, []);
 
     const handleEditClick = (user) => {
