@@ -83,7 +83,6 @@ export default function KezdolapUser() {
                     </div>
                 )}
 
-                {/* Dishes List as Cards with Back Button */}
                 {selectedRestaurant && (
                     <div className="col-md-9">
                         <button className="btn btn-secondary mb-3" onClick={handleBackToRestaurants}>&larr; Vissza az éttermekhez</button>
@@ -94,7 +93,7 @@ export default function KezdolapUser() {
                                     <div className="card h-100">
                                         {dish.image && (
                                             <img
-                                                src={`${process.env.REACT_APP_API_URL}/storage/${dish.image}`}
+                                                src={`http://localhost:8000/api/image/${dish.image}`}
                                                 className="card-img-top"
                                                 alt={dish.name}
                                                 style={{ height: '160px', objectFit: 'cover' }}
@@ -125,7 +124,6 @@ export default function KezdolapUser() {
                     </div>
                 )}
 
-                {/* Shopping Cart */}
                 <div className="col-md-3">
                     <div className="card">
                         <div className="card-header d-flex justify-content-between align-items-center">

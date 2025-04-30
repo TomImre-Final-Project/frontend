@@ -189,7 +189,7 @@ export default function Dishes() {
                         <div className="card">
                             {dish.image && (
                                 <img 
-                                    src={`${process.env.REACT_APP_API_URL}/storage/${dish.image}`} 
+                                    src={`http://localhost:8000/api/image/${dish.image}`} 
                                     className="card-img-top" 
                                     alt={dish.name}
                                     style={{ height: '200px', objectFit: 'cover' }}
