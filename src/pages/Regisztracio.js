@@ -11,7 +11,6 @@ export default function Regisztracio() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password_confirmation, setPasswordConfirmation] = useState("");
-  const [role, setRole] = useState("customer");
   const [phone, setPhone] = useState("");
 
   const navigate = useNavigate();
@@ -26,7 +25,7 @@ export default function Regisztracio() {
       email: email,
       password: password,
       password_confirmation: password_confirmation,
-      role: role,
+      role: "customer",
       phone: phone
     };       
     loginReg(adat, "/register");
@@ -142,21 +141,6 @@ export default function Regisztracio() {
               </span>
             )}
           </div>
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="role" className="form-label">
-            Szerepkör:
-          </label>
-          <select
-            className="form-control"
-            id="role"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          >
-            <option value="customer">Vásárló</option>
-            <option value="courier">Futár</option>
-          </select>
         </div>
 
         <button type="submit" className="btn btn-primary w-100">
