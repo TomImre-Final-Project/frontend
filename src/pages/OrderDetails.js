@@ -134,7 +134,7 @@ export default function OrderDetails() {
                             <h4 className="mb-0">Rendelési információk</h4>
                         </div>
                         <div className="card-body">
-                            <p><strong>Rendelő neve:</strong> {user.name}</p>
+                            <p><strong>Rendelő neve:</strong> {user.username}</p>
                             <p><strong>Email:</strong> {user.email}</p>
                         </div>
                     </div>
