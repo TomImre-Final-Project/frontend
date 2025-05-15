@@ -46,6 +46,13 @@ export default function Navigacio() {
                 </ul>
                 {user && (
                     <ul className="navbar-nav">
+                        {user.role === "customer" && (
+                            <li className="navbar-item">
+                                <Link className="nav-link" to="/orders/current">
+                                    Rendeléseim
+                                </Link>
+                            </li>
+                        )}
                         <li className="navbar-item">
                             <Link className="nav-link" to="/profile">
                                 {user.username}
