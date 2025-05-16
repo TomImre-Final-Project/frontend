@@ -24,6 +24,7 @@ import IncomingOrders from "./pages/restaurantmanager/IncomingOrders";
 import MyRestaurant from "./pages/restaurantmanager/MyRestaurant";
 import Dishes from "./pages/restaurantmanager/Dishes";
 import RestaurantManagerDashboard from "./pages/restaurantmanager/RestaurantManagerDashboard";
+import CustomerOrders from "./pages/customer/Orders";
 
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
                 {user && user.role === "customer" && (
                     <Route element={<UserLayout />}>
                         <Route path="/" element={<KezdolapUser />} />
+                        <Route path="orders/*" element={<CustomerOrders />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="order-details" element={<OrderDetails />} />
                         <Route path="order-success" element={<OrderSuccess />} />

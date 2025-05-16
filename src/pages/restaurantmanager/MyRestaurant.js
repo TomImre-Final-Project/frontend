@@ -68,14 +68,14 @@ export default function MyRestaurant() {
         }
     };
 
-    if (loading) return <div className="container mt-4">Loading...</div>;
+    if (loading) return <div className="container mt-4">Betöltés...</div>;
     if (error) return <div className="container mt-4 text-danger">{error}</div>;
-    if (!restaurant) return <div className="container mt-4">No restaurant found</div>;
+    if (!restaurant) return <div className="container mt-4">Nem található étterem</div>;
 
     return (
         <div className="container mt-4">
             <RestaurantManagerSubNav />
-            <h2>My Restaurant</h2>
+            <h2>Éttermem</h2>
             
             {!isEditing ? (
                 <div className="card">
