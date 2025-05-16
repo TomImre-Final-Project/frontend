@@ -15,6 +15,11 @@ export default function NavigacioUser() {
                         </Link>
                     </li>
                     <li className="navbar-item">
+                        <Link className="nav-link" to="/orders/history">
+                            Rendeléseim
+                        </Link>
+                    </li>
+                    <li className="navbar-item">
                         <button className="nav-link" onClick={() => { logout() }}>
                             Kijelentkezés
                         </button>
